@@ -18,7 +18,7 @@ public class Runigram {
 		// Tests the horizontal flipping of an image:
 		image = flippedHorizontally(tinypic);
 		System.out.println();
-		print(scaled(image, 6, 4));
+		print(image);
 		
 		//// Write here whatever code you need in order to test your work.
 		//// You can continue using the image array.
@@ -159,8 +159,10 @@ public class Runigram {
 	 * values in the two input color.
 	 */
 	public static Color blend(Color c1, Color c2, double alpha) {
-		//// Replace the following statement with your code
-		return null;
+		double r = alpha * c1.getRed() + (1 - alpha) * c2.getRed();
+   	 	double g = alpha * c1.getGreen() + (1 - alpha) * c2.getGreen();
+    	double b = alpha * c1.getBlue() + (1 - alpha) * c2.getBlue();
+		return new Color((int) r, (int) g, (int) b);
 	}
 	
 	/**
@@ -170,8 +172,15 @@ public class Runigram {
 	 * The two images must have the same dimensions.
 	 */
 	public static Color[][] blend(Color[][] image1, Color[][] image2, double alpha) {
-		//// Replace the following statement with your code
-		return null;
+	int rows = image1.length;
+    int cols = image1[0].length;
+    Color[][] newImage = new Color[rows][cols];
+    	for (int i = 0; i < rows; i++) {
+        	for (int j = 0; j < cols; j++) {
+            	newImage[i][j] = blend(image1[i][j], image2[i][j], alpha);
+        	}
+    	}
+    	return newImage;	
 	}
 
 	/**
@@ -181,7 +190,15 @@ public class Runigram {
 	 * of the source image.
 	 */
 	public static void morph(Color[][] source, Color[][] target, int n) {
-		//// Replace this comment with your code
+		if (source.length != target.length || source[0].length != target[0].length) {
+			target = scaled(target, source[0].length, source.length);
+			for (int i = 0; i <= n; i++) {
+				double alpha = (double)(n - i) / n;
+				Color[][] blendedImage = blend(source, target, alpha);
+				display(blendedImage);
+				StdDraw.pause(500);
+			}
+		}
 	}
 	
 	/** Creates a canvas for the given image. */
